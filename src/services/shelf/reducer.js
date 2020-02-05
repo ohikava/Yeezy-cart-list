@@ -2,7 +2,7 @@ import { FETCH_PRODUCTS } from './actionTypes.js';
 
 const initialState = {
   products: []
-};
+}
 
 export default function(state = initialState, action) {
   switch (action.type) {

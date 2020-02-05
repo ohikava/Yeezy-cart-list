@@ -21,10 +21,11 @@ export const fetchProducts = (filters, sortBy, callback) => dispatch => {
       .get(productsAPI)
       .then(res => {
         let products = res.data;
-        if (!!filters && filters.length > 0) {
-          products = products.filter(p =>
-            filters.find(f => p.availableSizes.find(size => size === f))
-          );
+        if (!!filters && filters.size > 0) {
+          console.log(filters)
+          products = products.filter(p => {
+            return p.availableSizes.split(';').some(s => filters.has(s));
+          });
         }
 
         if (!!sortBy) {
@@ -40,6 +41,7 @@ export const fetchProducts = (filters, sortBy, callback) => dispatch => {
         });
       })
         .catch(err => {
+          console.error(err)
           console.log('Could not fetch products. Try again later');
         });
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Spinner from '../Spinner/Spinner.js';
 import ShelfHeader from "./ShelfHeader/ShelfHeader.js";
 import ProductList from "./ProductList/ProductList.js";
@@ -9,15 +9,21 @@ import  {useSelector,useDispatch} from 'react-redux';
 
 const Shelf = () => {
   const dispatch = useDispatch();
-
-  dispatch(fetchProducts(null, null, null)).then(t => console.log(t));
+  const filters = useSelector(s => s.filter).items;
+  const products =  useSelector(s => s.shelf).products;
   const sort = useSelector(state => state.sort.type);
+
+  useEffect(() => {
+    dispatch(fetchProducts(filters, sort, null));
+  });
+
   const [isLoading, changeLoad] = useState(true);
 
   return <>
     {isLoading ? <Spinner /> : ' '}
     <div className="shelf-container">
-      <ShelfHeader productsLength={17}/>
+      <ShelfHeader productsLength={products.length}/>
+      <ProductList products={products} />
     </div>
   </>
 }
